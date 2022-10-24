@@ -1,0 +1,6 @@
+[submodule "submodules/raft"]
+	path = submodules/raft
+	url = https://github.com/hangg7/raft
+[submodule "submodules/dpt"]
+	path = submodules/dpt
+	url = https://github.com/isl-org/DPT

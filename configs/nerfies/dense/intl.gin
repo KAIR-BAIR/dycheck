@@ -1,0 +1,58 @@
+DATASET = 'nerfies'
+
+MAX_STEPS = 250000
+INIT_LR = 0.001
+FINAL_LR = 0.0001
+BATCH_SIZE = 6144
+BKGD_POINTS_BATCH_SIZE = 16384
+
+Config.dataset_cls = @NerfiesDatasetFromAllFrames
+NerfiesDataset.dataset = %DATASET
+NerfiesDataset.sequence = %SEQUENCE
+NerfiesDataset.batch_size = %BATCH_SIZE
+NerfiesDataset.split = 'train_intl'
+NerfiesParser.use_undistort = False
+Camera.use_center = True
+
+Config.model_cls = @DyNeRF
+DyNeRF.use_viewdirs = True
+DyNeRF.viewdirs_embed_cls.use_identity = True
+DyNeRF.points_embed_cls = @SE3DensePosEnc
+DyNeRF.use_warp = True
+DyNeRF.rgb_embed_key = None
+
+Tasks.task_classes = (
+    @Text,
+    @Checkpoint,
+    @NovelView,
+    @Video,
+)
+Checkpoint.interval = 20000
+Text.interval = 500
+NovelView.interval = 20000
+NovelView.split = 'val_intl'
+Video.interval = None
+Video.split = 'train_intl'
+Video.configs = [
+    {'camera_traj': 'lemniscate', 'time_traj': 'fixed'},
+    {'camera_traj': 'fixed', 'time_traj': 'replay'},
+    {'camera_traj': 'lemniscate', 'time_traj': 'replay'},
+]
+
+Trainer.max_steps = %MAX_STEPS
+Trainer.train_step = @train_step
+
+TrainSchedules.lr_sched = @lr_sched/ExponentialSchedule()
+lr_sched/ExponentialSchedule.initial_value = %INIT_LR
+lr_sched/ExponentialSchedule.final_value = %FINAL_LR
+lr_sched/ExponentialSchedule.num_steps = %MAX_STEPS
+
+train_step.use_bkgd_loss = True
+TrainSchedules.bkgd_sched = @bkgd_sched/ConstantSchedule()
+bkgd_sched/ConstantSchedule.value = 1.0
+NerfiesDataset.bkgd_points_batch_size = %BKGD_POINTS_BATCH_SIZE
+
+TrainSchedules.warp_alpha_sched = @warp_alpha/LinearSchedule()
+warp_alpha/LinearSchedule.initial_value = 0.0
+warp_alpha/LinearSchedule.final_value = 6.0
+warp_alpha/LinearSchedule.num_steps = 80000

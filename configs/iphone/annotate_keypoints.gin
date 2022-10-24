@@ -1,0 +1,7 @@
+DATASET = 'iphone'
+
+annotate_keypoints.Config.parser_cls = @iPhoneParser
+annotate_keypoints.Config.skeleton_cls = %SKELETON
+annotate_keypoints.Config.split = 'train'
+iPhoneParser.dataset = %DATASET
+iPhoneParser.sequence = %SEQUENCE

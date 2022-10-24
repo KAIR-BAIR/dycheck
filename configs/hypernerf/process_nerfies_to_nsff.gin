@@ -1,0 +1,3 @@
+include 'nerfies/process_nerfies_to_nsff.gin'
+
+DATASET = 'hypernerf'

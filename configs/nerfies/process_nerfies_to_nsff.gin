@@ -1,0 +1,10 @@
+DATASET = 'nerfies'
+
+process_nerfies_to_nsff.Config.parser_cls = @NerfiesParser
+NerfiesParser.dataset = %DATASET
+NerfiesParser.sequence = %SEQUENCE
+process_nerfies_to_nsff.Config.train_split = 'train_mono'
+process_nerfies_to_nsff.Config.val_split = 'val_mono'
+process_nerfies_to_nsff.Config.val_common_split = 'val_common'
+process_nerfies_to_nsff.Config.keypoint_splits = ('train_mono', 'train_common')
+process_nerfies_to_nsff.Config.dump_suffix = '_mono'

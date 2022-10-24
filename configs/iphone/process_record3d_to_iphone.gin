@@ -1,0 +1,6 @@
+DATASET = 'iphone'
+DATA_ROOT = None
+
+Record3DProcessor.data_root = %DATA_ROOT
+Record3DProcessor.sequence = %SEQUENCE
+Record3DProcessor.frgd_prompts = %FRGD_PROMPTS

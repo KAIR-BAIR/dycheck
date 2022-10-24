@@ -1,0 +1,3 @@
+include 'nerfies/dense/mono.gin'
+
+DATASET = 'hypernerf'

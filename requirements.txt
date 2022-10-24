@@ -1,0 +1,39 @@
+# Development.
+ipython
+ipdb
+ipykernel
+ipywidgets
+ipyevents
+jupyterlab
+mediapy
+# Basic.
+numpy==1.22.4
+plotly
+matplotlib
+opencv-python
+ffmpeg-python
+trimesh
+termcolor
+# Advanced utils.
+open3d==0.15.2
+tensorflow-graphics
+# Config system.
+gin-config==0.4.0
+# JAX.
+-f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+jax==0.2.19
+jaxlib==0.1.73+cuda11.cudnn82
+flax==0.3.4
+absl-py==1.0.0
+gast==0.5.3
+tensorflow==2.8.0
+tensorflow-hub==0.12.0
+tensorboard==2.8.0
+# Pytorch.
+https://download.pytorch.org/whl/cu115/torch-1.11.0%2Bcu115-cp38-cp38-linux_x86_64.whl
+https://download.pytorch.org/whl/cu115/torchvision-0.12.0%2Bcu115-cp38-cp38-linux_x86_64.whl
+lpips
+# MTTR processor requirements.
+-r dycheck/processors/mttr/requirements.txt
+# Local packaging.
+-e .

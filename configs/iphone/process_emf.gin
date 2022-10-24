@@ -1,0 +1,6 @@
+DATASET = 'iphone'
+
+process_emf.Config.parser_cls = @iPhoneParser
+iPhoneParser.dataset = %DATASET
+iPhoneParser.sequence = %SEQUENCE
+process_emf.Config.splits = ('train',)

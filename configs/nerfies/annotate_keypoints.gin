@@ -1,0 +1,7 @@
+DATASET = 'nerfies'
+
+annotate_keypoints.Config.parser_cls = @NerfiesParser
+annotate_keypoints.Config.skeleton_cls = %SKELETON
+annotate_keypoints.Config.split = 'train_mono'
+NerfiesParser.dataset = %DATASET
+NerfiesParser.sequence = %SEQUENCE

@@ -1,0 +1,6 @@
+DATASET = 'nerfies'
+
+process_emf.Config.parser_cls = @NerfiesParser
+NerfiesParser.dataset = %DATASET
+NerfiesParser.sequence = %SEQUENCE
+process_emf.Config.splits = ('train_intl', 'train_mono')

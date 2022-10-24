@@ -1,0 +1,3 @@
+include 'nerfies/process_covisible.gin'
+
+DATASET = 'hypernerf'

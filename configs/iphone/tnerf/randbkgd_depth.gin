@@ -1,0 +1,61 @@
+DATASET = 'iphone'
+
+MAX_STEPS = 250000
+INIT_LR = 0.001
+FINAL_LR = 0.0001
+BATCH_SIZE = 6144
+
+Config.dataset_cls = @iPhoneDatasetFromAllFrames
+iPhoneDatasetFromAllFrames.dataset = %DATASET
+iPhoneDatasetFromAllFrames.sequence = %SEQUENCE
+iPhoneDatasetFromAllFrames.batch_size = %BATCH_SIZE
+iPhoneDatasetFromAllFrames.split = 'train'
+Camera.use_center = True
+
+Config.model_cls = @DyNeRF
+DyNeRF.use_viewdirs = True
+DyNeRF.viewdirs_embed_cls.use_identity = True
+DyNeRF.points_embed_cls = @points_embed_cls/EmbedPosEnc
+points_embed_cls/EmbedPosEnc.features = 8
+points_embed_cls/EmbedPosEnc.num_freqs = 8
+points_embed_cls/EmbedPosEnc.use_identity = True
+DyNeRF.use_warp = False
+DyNeRF.rgb_embed_key = None
+DyNeRF.use_sample_at_infinity = False
+
+Tasks.task_classes = (
+    @Text,
+    @Checkpoint,
+    @NovelView,
+    @CrossView,
+    @Video,
+)
+Checkpoint.interval = 20000
+Text.interval = 500
+NovelView.interval = 20000
+NovelView.split = 'val'
+CrossView.interval = 20000
+CrossView.split = 'train'
+KeypointTransfer.interval = 20000
+KeypointTransfer.split = 'train'
+Video.interval = None
+Video.split = 'train'
+Video.configs = [
+    {'camera_traj': 'lemniscate', 'time_traj': 'fixed'},
+    {'camera_traj': 'fixed', 'time_traj': 'replay'},
+    {'camera_traj': 'lemniscate', 'time_traj': 'replay'},
+]
+
+Trainer.max_steps = %MAX_STEPS
+Trainer.train_step = @train_step
+
+TrainSchedules.lr_sched = @lr_sched/ExponentialSchedule()
+lr_sched/ExponentialSchedule.initial_value = %INIT_LR
+lr_sched/ExponentialSchedule.final_value = %FINAL_LR
+lr_sched/ExponentialSchedule.num_steps = %MAX_STEPS
+
+train_step.use_random_bkgd = True
+
+train_step.use_depth_loss = True
+TrainSchedules.depth_sched = @depth_sched/ConstantSchedule()
+depth_sched/ConstantSchedule.value = 1.0

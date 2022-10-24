@@ -1,0 +1,3 @@
+include 'nerfies/annotate_keypoints.gin'
+
+DATASET = 'hypernerf'

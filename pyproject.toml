@@ -1,0 +1,44 @@
+[tool.black]
+line-length = 79
+
+[tool.isort]
+line_length = 79
+force_grid_wrap = 0
+multi_line_output = 3
+known_myself = 'dycheck'
+skip_glob = '**/__init__.py'
+default_section = 'FIRSTPARTY'
+include_trailing_comma = true
+sections = [
+  'FUTURE',
+  'STDLIB',
+  'THIRDPARTY',
+  'MYSELF',
+  'FIRSTPARTY',
+  'LOCALFOLDER',
+]
+known_third_party = [
+  'matplotlib',
+  'cv2',
+  'PIL',
+  'gin',
+  'jax',
+  'tensorflow',
+  'torch',
+  'torchvision',
+  'flax',
+  'tqdm',
+  'numpy',
+  'scipy',
+  'pandas',
+  'ffmpeg',
+  'mediapy',
+  'addict',
+  'trimesh',
+  'plotly',
+  'open3d',
+  'absl',
+  'tensorflow_graphics',
+  'sklearn',
+  'lpips',
+]

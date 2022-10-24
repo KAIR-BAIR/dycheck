@@ -1,0 +1,6 @@
+einops
+timm
+transformers
+pycocotools
+ruamel.yaml
+gdown

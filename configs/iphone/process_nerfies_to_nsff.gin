@@ -1,0 +1,9 @@
+DATASET = 'iphone'
+
+process_nerfies_to_nsff.Config.parser_cls = @iPhoneParser
+iPhoneParser.dataset = %DATASET
+iPhoneParser.sequence = %SEQUENCE
+process_nerfies_to_nsff.Config.train_split = 'train'
+process_nerfies_to_nsff.Config.val_split = 'val'
+process_nerfies_to_nsff.Config.keypoint_splits = ('train',)
+process_nerfies_to_nsff.Config.dump_suffix = ''

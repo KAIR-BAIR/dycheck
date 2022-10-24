@@ -1,0 +1,7 @@
+DATASET = 'iphone'
+
+process_covisible.Config.parser_cls = @iPhoneParser
+iPhoneParser.dataset = %DATASET
+iPhoneParser.sequence = %SEQUENCE
+process_covisible.Config.splits = ('val',)
+process_covisible.Config.chunk = 128

@@ -1,0 +1,7 @@
+DATASET = 'nerfies'
+
+process_covisible.Config.parser_cls = @NerfiesParser
+NerfiesParser.dataset = %DATASET
+NerfiesParser.sequence = %SEQUENCE
+process_covisible.Config.splits = ('val_intl', 'val_mono', 'val_common')
+process_covisible.Config.chunk = 192
