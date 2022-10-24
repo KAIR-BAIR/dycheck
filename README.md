@@ -1,6 +1,6 @@
 # Monocular Dynamic View Synthesis: A Reality Check
 
-### [Paper](TODO) | [Project Page](https://hangg7.com/dycheck) | [Video](TODO) | [Data](https://drive.google.com/drive/folders/1ZYQQh0qkvpoGXFIcK_j4suon1Wt6MXdZ?usp=sharing)
+### [Paper](https://drive.google.com/file/d/14EZbh46Ej1A7Xs9iwQ_AMUbpPxhCfEIk/view?usp=sharing) | [Project Page](https://hangg7.com/dycheck) | [Video](https://www.youtube.com/watch?v=WwESsNivJP8&t=21s) | [Data](https://drive.google.com/drive/folders/1ZYQQh0qkvpoGXFIcK_j4suon1Wt6MXdZ?usp=sharing)
 
 This repo contains training, evaluation, and visualization code for the reality check that we descripted in our paper on the recent advance in Dynamic View Synthesis (DVS) from monocular video.
 
