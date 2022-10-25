@@ -1,6 +1,6 @@
 # Monocular Dynamic View Synthesis: A Reality Check
 
-### [Paper](https://drive.google.com/file/d/14EZbh46Ej1A7Xs9iwQ_AMUbpPxhCfEIk/view?usp=sharing) | [Project Page](https://hangg7.com/dycheck) | [Video](https://www.youtube.com/watch?v=WwESsNivJP8&t=21s) | [Data](https://drive.google.com/drive/folders/1ZYQQh0qkvpoGXFIcK_j4suon1Wt6MXdZ?usp=sharing)
+### [Paper](https://arxiv.org/abs/2210.13445) | [Project Page](https://hangg7.com/dycheck) | [Video](https://www.youtube.com/watch?v=WwESsNivJP8&t=21s) | [Data](https://drive.google.com/drive/folders/1ZYQQh0qkvpoGXFIcK_j4suon1Wt6MXdZ?usp=sharing)
 
 This repo contains training, evaluation, and visualization code for the reality check that we descripted in our paper on the recent advance in Dynamic View Synthesis (DVS) from monocular video.
 
@@ -51,16 +51,16 @@ You should be able to get the results below by specifying each task:
 
 <table width="100%">
     <tr align=center>
-        <td width="25%"><img src="https://drive.google.com/uc?export=view&id=1zsP4GcuoFK-xwR3oVwNs2pvHtvVnCmhh" width="100%"></td>
-        <td width="25%"><img src="https://drive.google.com/uc?export=view&id=1D02bPteah5m2o5YLgyBsnHIhAxIYrhza" width="100%"></td>
-        <td width="25%"><img src="https://drive.google.com/uc?export=view&id=1L7tO3dqU6ibKPZyBaKVusFWqAYcUPB_b" width="100%"></td>
-        <td width="25%"><img src="https://drive.google.com/uc?export=view&id=1w9OD53Os7tn2EcNa7tmIXwN9ZI_tXvgV" width="100%"></td>
+        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1zsP4GcuoFK-xwR3oVwNs2pvHtvVnCmhh" width="100%"></td>
+        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1D02bPteah5m2o5YLgyBsnHIhAxIYrhza" width="100%"></td>
+        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1L7tO3dqU6ibKPZyBaKVusFWqAYcUPB_b" width="100%"></td>
+        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1w9OD53Os7tn2EcNa7tmIXwN9ZI_tXvgV" width="100%"></td>
     </tr>
     <tr align=center>
-        <td><b>Training video</b></td>
-        <td><b>Novel-view</b><br>fix time; move camera<br><code>&#60;TASK&#62;="novel_view"</code></td>
-        <td><b>Stabilized-view</b><br>fix camera; replay time<br><code>&#60;TASK&#62;="stabilized_view"</code></td>
-        <td><b>Bullet-time</b><br>move camera; replay time<br><code>&#60;TASK&#62;="bullet_time"</code></td>
+        <td width="24%"><b>Training video</b></td>
+        <td width="24%"><b>Novel-view</b><br>fix time; move camera<br><code>&#60;TASK&#62;="novel_view"</code></td>
+        <td width="24%"><b>Stabilized-view</b><br>fix camera; replay time<br><code>&#60;TASK&#62;="stabilized_view"</code></td>
+        <td width="24%"><b>Bullet-time</b><br>move camera; replay time<br><code>&#60;TASK&#62;="bullet_time"</code></td>
     </tr>
 </table>
 
