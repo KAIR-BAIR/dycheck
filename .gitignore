@@ -1,7 +1,6 @@
 .tmp/
 *release*
 /datasets
-/assets/
 /datasets/
 /work_dirs
 /work_dirs/

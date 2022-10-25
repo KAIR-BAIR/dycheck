@@ -13,6 +13,10 @@ Please refer to our project page for more visualizations and qualitative results
 [Angjoo Kanazawa](https://people.eecs.berkeley.edu/~kanazawa/).
 In NeurIPS, 2022.
 
+<p align="left">
+    <img src="assets/teaser2.gif" alt="teaser" width="100%"/>
+</p>
+
 <!-- **Table of Contents** -->
 <!-- <br> -->
 
@@ -47,20 +51,20 @@ Here is a demo to get you started: re-rendering a paper-windmill video from a pr
 python demo/launch.py --task <TASK>
 ```
 
-You should be able to get the results below by specifying each task:
+You should be able to get the results below by specifying `<TASK>=...`:
 
 <table width="100%">
     <tr align=center>
-        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1zsP4GcuoFK-xwR3oVwNs2pvHtvVnCmhh" width="100%"></td>
-        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1D02bPteah5m2o5YLgyBsnHIhAxIYrhza" width="100%"></td>
-        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1L7tO3dqU6ibKPZyBaKVusFWqAYcUPB_b" width="100%"></td>
-        <td width="24%"><img src="https://drive.google.com/uc?export=view&id=1w9OD53Os7tn2EcNa7tmIXwN9ZI_tXvgV" width="100%"></td>
+        <td width="24%"><img src="./assets/demo/train.gif" width="100%"></td>
+        <td width="24%"><img src="./assets/demo/novel_view.gif" width="100%"></td>
+        <td width="24%"><img src="./assets/demo/stabilized_view.gif" width="100%"></td>
+        <td width="24%"><img src="./assets/demo/bullet_time.gif" width="100%"></td>
     </tr>
     <tr align=center>
         <td width="24%"><b>Training video</b></td>
-        <td width="24%"><b>Novel-view</b><br>fix time; move camera<br><code>&#60;TASK&#62;="novel_view"</code></td>
-        <td width="24%"><b>Stabilized-view</b><br>fix camera; replay time<br><code>&#60;TASK&#62;="stabilized_view"</code></td>
-        <td width="24%"><b>Bullet-time</b><br>move camera; replay time<br><code>&#60;TASK&#62;="bullet_time"</code></td>
+        <td width="24%"><code>"novel_view"</code></td>
+        <td width="24%"><code>"stabilized_view"</code></td>
+        <td width="24%"><code>"bullet_time"</code></td>
     </tr>
 </table>
 
