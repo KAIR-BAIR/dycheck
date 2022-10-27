@@ -12,7 +12,7 @@ Note that for RAFT, we use our forked repo instead of the original one, where th
 
 ```bash
 # Make sure you include the `--recursive` arg.
-git clone https://github.com/hangg7/dycheck --recursive
+git clone https://github.com/KAIR-BAIR/dycheck --recursive
 ```
 
 ## 2. Create a new `conda` environment.
@@ -65,5 +65,5 @@ Then click on our [released folder](https://drive.google.com/drive/folders/1bjGw
 
 ```bash
 # `<DRIVE_NAME>` is the name of your google drive profile for `rclone`.
-rclone lsd --drive-shared-with-me "<DRIVE_NAME>:/dybench_release"
+rclone lsd --drive-shared-with-me "<DRIVE_NAME>:/dycheck-release"
 ```

@@ -62,13 +62,13 @@ In total, we have the following (additional data are marked with `**`):
 - Contains our manual keypoint annotations for correspondence evaluation.
 - Only available for 10 uniformly sampled training frames.
 - Each keypoint frame `<ITEM_ID>.json` contains a `(J, 3)` list for `J` keypoints, where each row contain the `(x, y, v)` information for the absolute keypoint position `(x, y)` and its visibility in this frame `v` in binary.
-- `skeleton.json` stores a serialization of the [skeleton definition](https://github.com/hangg7/dybench/blob/main/dybench/utils/visuals/kps/skeleton.py#L56-L62).
+- `skeleton.json` stores a serialization of the [skeleton definition](https://github.com/KAIR-BAIR/dycheck/blob/main/dycheck/utils/visuals/kps/skeleton.py#L56-L62).
 
 ### `splits/`
 
 - Contains data split dictionary for toggling between the teleporting setting of existing methods and the actual monocular (non-teleporting) setting.
 - iPhone dataset contains simple `train/val` splits, while Nerfies-HyperNeRF contains `train_/val_<SETTING>` where `<SETTING>` is one of `["mono", "intl", "common"]`.
-- They are [defined](https://github.com/hangg7/dybench/blob/main/dybench/datasets/nerfies.py#L409-L455), use Nerfies-HyperNeRF as an example, and will be automatically generated the first time you run the dataloader (by running any of our evaluation/training scripts).
+- They are [defined](https://github.com/KAIR-BAIR/dycheck/blob/main/dycheck/datasets/nerfies.py#L409-L455), use Nerfies-HyperNeRF as an example, and will be automatically generated the first time you run the dataloader (by running any of our evaluation/training scripts).
 - Each `<SPLIT>.json` contains a dictionary of the following format:
 
 ```
@@ -138,7 +138,7 @@ In total, we have the following (additional data are marked with `**`):
 }
 ```
 
-- They are [defined](https://github.com/hangg7/dybench/blob/main/dybench/datasets/nerfies.py#L367-L407), use Nerfies-HyperNeRF as an example, and will be automatically generated the first time you run the dataloader (by running any of our evaluation/training scripts).
+- They are [defined](https://github.com/KAIR-BAIR/dycheck/blob/main/dycheck/datasets/nerfies.py#L367-L407), use Nerfies-HyperNeRF as an example, and will be automatically generated the first time you run the dataloader (by running any of our evaluation/training scripts).
 
 </details>
 
