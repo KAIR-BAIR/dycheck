@@ -1,6 +1,6 @@
 # Benchmark
 
-Please find our best performing checkpoints used for reality checks at [here](https://drive.google.com/drive/u/0/folders/1ZYQQh0qkvpoGXFIcK_j4suon1Wt6MXdZ), including:
+Please find our best performing checkpoints used for reality checks at [here](https://drive.google.com/drive/folders/1c6zl72ln3aC3SbISPltMKiNeIgDuZH1Q), including:
 
 1. Models trained without camera teleportation on Nerfies-HyperNeRF dataset.
 2. Models trained with camera teleportation on Nerfies-HyperNeRF dataset to ensure that we match the results from offcial implementations.
@@ -79,8 +79,8 @@ Please see our paper for full results. Here, we report a part of masked image me
 | mLPIPS    | mean  | broom | curls | tail  | toby-sit | 3dprinter | chicken | peel-banana |
 | --------- | :---: | :---: | :---: | :---: | :------: | :-------: | :-----: | :---------: |
 | T-NeRF    | 0.297 | 0.59  | 0.284 | 0.305 |  0.421   |   0.203   |  0.131  |    0.142    |
-| NSFF      | 0.471 | 0.776 | 0.378 | 0.522 |   0.6    |   0.443   |  0.29   |    0.293    |
-| Nerfies   |  0.2  | 0.294 | 0.22  | 0.213 |  0.249   |   0.148   |  0.114  |    0.161    |
+| NSFF      | 0.471 | 0.776 | 0.378 | 0.522 |  0.600   |   0.443   |  0.29   |    0.293    |
+| Nerfies   | 0.200 | 0.294 | 0.22  | 0.213 |  0.249   |   0.148   |  0.114  |    0.161    |
 | HyperNeRF | 0.192 | 0.279 | 0.22  | 0.218 |  0.242   |   0.147   |  0.101  |    0.135    |
 
 | PCK-T     | mean  | broom | curls | tail  | toby-sit | 3dprinter | chicken | peel-banana |
@@ -101,14 +101,14 @@ To reproduce our results, please follow the commands below. To evaluate our rele
 # Evaluate a trained model with all the metrics.
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/launch.py \
     --gin_configs "configs/<DATASET>/<MODEL>/mono.gin" \
-    --gin_bindings "Config.engine_cls=@Evaluation" \
-    --gin_bindings 'SEQUENCE="'"<SEQUENCE>"'"'
+    --gin_bindings "Config.engine_cls=@Evaluator" \
+    --gin_bindings 'SEQUENCE="<SEQUENCE>"'
 
-# Train model from scratch.
+# Train model from scratch and evaluate.
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/launch.py \
     --gin_configs "configs/<DATASET>/<MODEL>/mono.gin" \
     --gin_bindings "Config.engine_cls=@Trainer" \
-    --gin_bindings 'SEQUENCE="'"<SEQUENCE>"'"'
+    --gin_bindings 'SEQUENCE="<SEQUENCE>"'
 ```
 
 For example, to evaluate the HyperNeRF model trained on `peel-banana`:
@@ -121,8 +121,8 @@ bash scripts/download_single_checkpoint.sh <DRIVE_NAME> \
 # Evaluate the checkpoint.
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/launch.py \
     --gin_configs "configs/hypernerf/ambient/mono.gin" \
-    --gin_bindings "Config.engine_cls=@Evaluation" \
-    --gin_bindings 'SEQUENCE="'"peel-banana"'"'
+    --gin_bindings "Config.engine_cls=@Evaluator" \
+    --gin_bindings 'SEQUENCE="peel-banana"'
 ```
 
 <details>
@@ -150,17 +150,17 @@ Please see our paper for full results. Here, we report PSNR and LPIPS.
 # <SEQUENCE> in [broom, curls, tail, toby-sit] if <DATASET> == nerfies
 # <SEQUENCE> in [3dprinter, chicken, peel-banana] if <DATASET> == hypernerf
 
-# Train model from scratch.
+# Train model from scratch and evaluate.
 python tools/launch.py \
     --gin_configs "configs/<DATASET>/<MODEL>/intl.gin" \
     --gin_bindings "Config.engine_cls=@Trainer" \
-    --gin_bindings 'SEQUENCE="'"<SEQUENCE>"'"'
+    --gin_bindings 'SEQUENCE="<SEQUENCE>"'
 
 # Evaluate a trained model with all the metrics.
 python tools/launch.py \
     --gin_configs "configs/<DATASET>/<MODEL>/intl.gin" \
-    --gin_bindings "Config.engine_cls=@Evaluation" \
-    --gin_bindings 'SEQUENCE="'"<SEQUENCE>"'"'
+    --gin_bindings "Config.engine_cls=@Evaluator" \
+    --gin_bindings 'SEQUENCE="<SEQUENCE>"'
 ```
 
 For example, to evaluate the HyperNeRF model trained on `peel-banana`:
@@ -173,8 +173,20 @@ bash scripts/download_single_checkpoint.sh <DRIVE_NAME> \
 # Evaluate the checkpoint.
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/launch.py \
     --gin_configs "configs/hypernerf/ambient/intl.gin" \
-    --gin_bindings "Config.engine_cls=@Evaluation" \
-    --gin_bindings 'SEQUENCE="'"peel-banana"'"'
+    --gin_bindings "Config.engine_cls=@Evaluator" \
+    --gin_bindings 'SEQUENCE="peel-banana"'
+```
+
+We provide you the training evaluation that we used as an reference.
+
+```bash
+# Train model from scratch and evaluate.
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash scripts/trainval_nerfies_hypernerf.sh \
+    hypernerf/peel-banana
+
+# Only evaluate the checkpoint by rendering videos.
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash scripts/val_nerfies_hypernerf_video.sh \
+    hypernerf/peel-banana
 ```
 
 </details>
@@ -185,12 +197,12 @@ Please see our paper for full results. Here, we again report a part of masked im
 
 We report the performance with the best configuration that we found on iPhone dataset (`randbkgd_depth_dist`).
 
-| mPSNR     | mean  | broom | curls | tail  | toby-sit | 3dprinter | chicken | peel-banana |
-| --------- | :---: | :---: | :---: | :---: | :------: | :-------: | :-----: | :---------: |
-| T-NeRF    | 21.56 | 20.04 | 21.86 | 22.56 |  18.53   |   19.77   |  25.54  |    22.64    |
-| NSFF      | 19.53 | 20.36 | 18.74 | 21.94 |  18.66   |   16.89   |  21.47  |    18.68    |
-| Nerfies   | 20.85 | 19.34 | 23.28 | 21.46 |  18.45   |   19.67   |  23.78  |    19.97    |
-| HyperNeRF | 21.13 | 19.04 | 23.13 | 21.54 |  18.40   |   19.58   |  24.90  |    21.34    |
+| mPSNR     | mean  | apple | block | paper-windmill | space-out | spin  | teddy | wheel |
+| --------- | :---: | :---: | :---: | :------------: | :-------: | :---: | :---: | :---: |
+| T-NeRF    | 16.96 | 17.43 | 17.52 |     17.55      |   17.71   | 19.16 | 13.71 | 15.65 |
+| NSFF      | 15.46 | 16.47 | 14.71 |     14.94      |   17.65   | 17.26 | 12.59 | 14.59 |
+| Nerfies   | 16.45 | 17.54 | 16.61 |     17.34      |   17.79   | 18.38 | 13.65 | 13.82 |
+| HyperNeRF | 16.81 | 17.64 | 17.54 |     17.38      |   17.93   | 19.20 | 13.97 | 13.99 |
 
 | mLPIPS    | mean  | apple | block | paper-windmill | space-out | spin  | teddy | wheel |
 | --------- | :---: | :---: | :---: | :------------: | :-------: | :---: | :---: | :---: |
@@ -213,14 +225,15 @@ We report the performance with the best configuration that we found on iPhone da
 # Evaluate a trained model with all the metrics.
 python tools/launch.py \
     --gin_configs "configs/iphone/<MODEL>/randbkgd_depth_dist.gin" \
-    --gin_bindings "Config.engine_cls=@Evaluation" \
-    --gin_bindings 'SEQUENCE="'"<SEQUENCE>"'"'
+    --gin_bindings "Config.engine_cls=@Evaluator" \
+    --gin_bindings 'SEQUENCE="<SEQUENCE>"'
 
-# Train model from scratch.
+# Train model from scratch and evaluate. You can also try different <SETTING>
+in [base, randbkgd, randbkgd_depth, randbkgd_depth_dist].
 python tools/launch.py \
     --gin_configs "configs/iphone/<MODEL>/randbkgd_depth_dist.gin" \
     --gin_bindings "Config.engine_cls=@Trainer" \
-    --gin_bindings 'SEQUENCE="'"<SEQUENCE>"'"'
+    --gin_bindings 'SEQUENCE="<SEQUENCE>"'
 ```
 
 For example, to evaluate the HyperNeRF model trained on `teddy`:
@@ -233,6 +246,18 @@ bash scripts/download_single_checkpoint.sh <DRIVE_NAME> \
 # Evaluate the checkpoint.
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/launch.py \
     --gin_configs "configs/iphone/ambient/randbkgd_depth_dist.gin" \
-    --gin_bindings "Config.engine_cls=@Evaluation" \
-    --gin_bindings 'SEQUENCE="'"teddy"'"'
+    --gin_bindings "Config.engine_cls=@Evaluator" \
+    --gin_bindings 'SEQUENCE="teddy"'
+```
+
+We provide you the training evaluation that we used as an reference.
+
+```bash
+# Train model from scratch and evaluate.
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash scripts/trainval_iphone.sh \
+    iphone/teddy
+
+# Only evaluate the checkpoint by rendering videos.
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash scripts/val_iphone_video.sh \
+    iphone/teddy
 ```

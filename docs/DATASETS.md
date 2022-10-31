@@ -176,7 +176,7 @@ We prepared a simple download script for you to set up data from scratch:
 
 ```bash
 # Download iPhone dataset.
-bash scripts/download_iphone.sh <DRIVE_NAME>
+bash scripts/download_iphone_dataset.sh <DRIVE_NAME>
 ```
 
 <details>

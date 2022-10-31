@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# File   : setup.sh
+# File   : download_singlecheckpoint.sh
 # Author : Hang Gao
 # Email  : hangg.sv7@gmail.com
 #
@@ -19,19 +19,16 @@
 
 set -e -x
 
-conda create -n dycheck python=3.8 -y
-eval "$(conda shell.bash hook)"
-conda activate dycheck
-echo "layout anaconda dycheck" > .envrc
-direnv allow
+DRIVE_NAME=$1
 
-# tensorflow-graphics dependency.
-sudo apt install libopenexr-dev ffmpeg -y
+DATASET=$2
+SEQUENCE=$3
+MODEL=$4
+SETTING=$5
 
-pip install -r requirements.txt
-
-# Setup jupyter tools for annotation and visualization.
-jupyter labextension install jupyterlab-plotly ipyevents
-
-# Setup git hooks.
-cp .dev/git-hooks/pre-commit .git/hooks/pre-commit
+# Download a single checkpoint.
+echo 'Downloading a checkpoint...'
+mkdir -p "work_dirs/${DATASET}/${SEQUENCE}/${MODEL}/${SETTING}"
+pushd "work_dirs/${DATASET}/${SEQUENCE}/${MODEL}/${SETTING}"
+rclone copy --drive-shared-with-me --progress "${DRIVE_NAME}:/dycheck-release/work_dirs/${DATASET}/${SEQUENCE}/${MODEL}/${SETTING}" .
+popd
