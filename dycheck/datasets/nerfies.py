@@ -46,18 +46,18 @@ DEFAULT_FACTORS: Dict[str, int] = {
     "nerfies/curls": 8,
     "nerfies/tail": 4,
     "nerfies/toby-sit": 4,
-    "hypernerf/vrig-3dprinter": 4,
-    "hypernerf/vrig-chicken": 4,
-    "hypernerf/vrig-peel-banana": 4,
+    "hypernerf/3dprinter": 4,
+    "hypernerf/chicken": 4,
+    "hypernerf/peel-banana": 4,
 }
 DEFAULT_FPS: Dict[str, float] = {
     "nerfies/broom": 15,
     "nerfies/curls": 5,
     "nerfies/tail": 15,
     "nerfies/toby-sit": 15,
-    "hypernerf/vrig-3dprinter": 15,
-    "hypernerf/vrig-chicken": 15,
-    "hypernerf/vrig-peel-banana": 15,
+    "hypernerf/3dprinter": 15,
+    "hypernerf/chicken": 15,
+    "hypernerf/peel-banana": 15,
 }
 
 
