@@ -195,6 +195,10 @@ If you find this repository useful for your research, please use the following:
 }
 ```
 
+## License
+
+Both our code and dataset are released under the Apache 2.0 license.
+
 ## Acknowledgement
 
 This repository is built on top of Keunhong's [hypernerf](https://github.com/google/hypernerf) and [nerfies](https://github.com/google/nerfies) codebases. We also thank [jaxnerf](https://github.com/google-research/google-research/blob/master/jaxnerf) for reference of fast data-loading; [deq-jax](https://github.com/akbir/deq-jax) for Broyden root-finding solver.
