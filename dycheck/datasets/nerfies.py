@@ -216,7 +216,10 @@ class NerfiesParser(Parser):
         frame_name = self._frame_names_map[time_id, camera_id]
         covisible_path = osp.join(
             self.data_dir,
-            "covisible" if not use_undistort else "covisible_undistort",
+            #  "covisible" if not use_undistort else "covisible_undistort",
+            getattr(self, "covisible_name", "covisible")
+            if not use_undistort
+            else "covisible_undistort",
             f"{self._factor}x",
             split,
             frame_name + ".png",
@@ -271,7 +274,8 @@ class NerfiesParser(Parser):
         keypoints_path = osp.join(
             self.data_dir,
             "keypoint" if not use_undistort else "keypoint_undistort",
-            f"{self._factor}x",
+            #  f"{self._factor}x",
+            "2x",
             split,
             frame_name + ".json",
         )
@@ -306,6 +310,7 @@ class NerfiesParser(Parser):
                 f"annotated before, please consider running "
                 f"tools/annotate_keypoints.ipynb."
             )
+        keypoints[:, :2] *= 2 / self._factor
         return np.concatenate(
             [keypoints[:, :2] + offset, keypoints[:, -1:]], axis=-1
         )
@@ -322,7 +327,8 @@ class NerfiesParser(Parser):
         skeleton_path = osp.join(
             self.data_dir,
             "keypoint",
-            f"{self._factor}x",
+            #  f"{self._factor}x",
+            "2x",
             split,
             "skeleton.json",
         )

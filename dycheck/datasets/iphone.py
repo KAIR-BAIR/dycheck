@@ -939,11 +939,16 @@ class iPhoneParser(NerfiesParser):
         sequence: str,
         *,
         data_root: Optional[types.PathType] = None,
+        factor: Optional[int] = None,
+        depth_name: str = "depth",
+        covisible_name: str = "depth",
     ):
         super(NerfiesParser, self).__init__(
             dataset, sequence, data_root=data_root
         )
         self.use_undistort = False
+        self.depth_name = depth_name
+        self.covisible_name = covisible_name
 
         (
             self._center,
@@ -957,6 +962,8 @@ class iPhoneParser(NerfiesParser):
             self._camera_ids,
         ) = _load_metadata_info(self.data_dir)
         self._load_extra_info()
+        if factor is not None:
+            self._factor = factor
 
         self.splits_dir = osp.join(self.data_dir, "splits")
         if not osp.exists(self.splits_dir):
@@ -972,9 +979,14 @@ class iPhoneParser(NerfiesParser):
     ) -> np.ndarray:
         frame_name = self._frame_names_map[time_id, camera_id]
         depth_path = osp.join(
-            self.data_dir, "depth", f"{self._factor}x", frame_name + ".npy"
+            self.data_dir,
+            self.depth_name,
+            f"{self._factor}x",
+            frame_name + ".npy",
         )
         depth = io.load(depth_path) * self.scale
+        if depth.ndim == 2:
+            depth = depth[..., None]
         camera = self.load_camera(time_id, camera_id)
         # The original depth data is projective; convert it to ray traveling
         # distance.
