@@ -984,7 +984,11 @@ class iPhoneParser(NerfiesParser):
             f"{self._factor}x",
             frame_name + ".npy",
         )
-        depth = io.load(depth_path) * self.scale
+        depth = io.load(depth_path)
+        if self.depth_name != "depth":
+            # Hard-code for monocular depth.
+            depth = 1.0 / depth
+        depth = depth * self.scale
         if depth.ndim == 2:
             depth = depth[..., None]
         camera = self.load_camera(time_id, camera_id)
