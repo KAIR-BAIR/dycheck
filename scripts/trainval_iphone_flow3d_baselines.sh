@@ -26,13 +26,21 @@ for SEQUENCE in $SEQUENCES; do
 	SEQUENCE="${SEQUENCE#*/}"
 	# shellcheck disable=2048
 	for MODEL in ${MODELS[*]}; do
+		# python tools/launch.py \
+		#     --gin_configs "configs/${DATASET}/${MODEL}/randbkgd_depth_dist.gin" \
+		#     --gin_bindings "Config.engine_cls=@Trainer" \
+		#     --gin_bindings 'SEQUENCE="'"${SEQUENCE}"'"' \
+		#     --gin_bindings 'iPhoneParser.factor=1' \
+		#     --gin_bindings 'iPhoneParser.depth_name="flow3d_preprocessed/aligned_depth_anything"' \
+		#     --gin_bindings 'iPhoneParser.covisible_name="flow3d_preprocessed/covisible"'
 		python tools/launch.py \
 			--gin_configs "configs/${DATASET}/${MODEL}/randbkgd_depth_dist.gin" \
 			--gin_bindings "Config.engine_cls=@Trainer" \
 			--gin_bindings 'SEQUENCE="'"${SEQUENCE}"'"' \
 			--gin_bindings 'iPhoneParser.factor=1' \
-			--gin_bindings 'iPhoneParser.depth_name="flow3d_preprocessed/aligned_depth_anything"' \
-			--gin_bindings 'iPhoneParser.covisible_name="flow3d_preprocessed/covisible"'
+			--gin_bindings 'iPhoneParser.depth_name="flow3d_preprocessed/aligned_depth_anything_colmap"' \
+			--gin_bindings 'iPhoneParser.covisible_name="flow3d_preprocessed/covisible"' \
+			--gin_bindings 'iPhoneParser.use_refined_camera=True'
 		sleep 5s
 	done
 done

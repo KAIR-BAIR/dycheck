@@ -189,9 +189,16 @@ class NerfiesParser(Parser):
             use_undistort = self.use_undistort
 
         frame_name = self._frame_names_map[time_id, camera_id]
+        use_refined_camera = getattr(self, "use_refined_camera", False)
         camera = (
             geometry.Camera.fromjson(
-                osp.join(self.data_dir, "camera", frame_name + ".json")
+                osp.join(
+                    self.data_dir,
+                    "camera"
+                    if not use_refined_camera
+                    else "flow3d_preprocessed/colmap/dycheck/camera",
+                    frame_name + ".json",
+                )
             )
             .rescale_image_domain(1 / self._factor)
             .translate(-self._center)
@@ -364,9 +371,17 @@ class NerfiesParser(Parser):
         )
 
     def load_bkgd_points(self) -> np.ndarray:
-        bkgd_points = io.load(osp.join(self.data_dir, "points.npy")).astype(
-            np.float32
-        )
+        use_refined_camera = getattr(self, "use_refined_camera", False)
+        bkgd_points = io.load(
+            osp.join(
+                self.data_dir
+                if not use_refined_camera
+                else osp.join(
+                    self.data_dir, "flow3d_preprocessed/colmap/dycheck/"
+                ),
+                "points.npy",
+            )
+        ).astype(np.float32)
         bkgd_points = (bkgd_points - self._center) * self._scale
         return bkgd_points
 

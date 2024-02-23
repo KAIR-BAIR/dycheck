@@ -941,7 +941,8 @@ class iPhoneParser(NerfiesParser):
         data_root: Optional[types.PathType] = None,
         factor: Optional[int] = None,
         depth_name: str = "depth",
-        covisible_name: str = "depth",
+        covisible_name: str = "covisible",
+        use_refined_camera: bool = False,
     ):
         super(NerfiesParser, self).__init__(
             dataset, sequence, data_root=data_root
@@ -949,13 +950,13 @@ class iPhoneParser(NerfiesParser):
         self.use_undistort = False
         self.depth_name = depth_name
         self.covisible_name = covisible_name
+        self.use_refined_camera = use_refined_camera
 
-        (
-            self._center,
-            self._scale,
-            self._near,
-            self._far,
-        ) = _load_scene_info(self.data_dir)
+        self._center, self._scale, self._near, self._far = _load_scene_info(
+            self.data_dir
+            if not self.use_refined_camera
+            else osp.join(self.data_dir, "flow3d_preprocessed/colmap/dycheck/")
+        )
         (
             self._frame_names_map,
             self._time_ids,
@@ -1017,7 +1018,12 @@ class iPhoneParser(NerfiesParser):
         )
 
     def _load_extra_info(self) -> None:
-        extra_path = osp.join(self.data_dir, "extra.json")
+        if not self.use_refined_camera:
+            extra_path = osp.join(self.data_dir, "extra.json")
+        else:
+            extra_path = osp.join(
+                self.data_dir, "flow3d_preprocessed/colmap/dycheck/extra.json"
+            )
         extra_dict = io.load(extra_path)
         self._factor = extra_dict["factor"]
         self._fps = extra_dict["fps"]
