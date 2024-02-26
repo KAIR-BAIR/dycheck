@@ -40,7 +40,9 @@ for SEQUENCE in $SEQUENCES; do
 			--gin_bindings 'iPhoneParser.factor=1' \
 			--gin_bindings 'iPhoneParser.depth_name="flow3d_preprocessed/aligned_depth_anything_colmap"' \
 			--gin_bindings 'iPhoneParser.covisible_name="flow3d_preprocessed/covisible"' \
-			--gin_bindings 'iPhoneParser.use_refined_camera=True'
+			--gin_bindings 'iPhoneParser.use_refined_camera=True' \
+			--gin_bindings 'train_step.depth_loss_quantile=0.98' \
+			--gin_bindings "Config.name='${MODEL}/randbkgd_depth_dist_quantile'"
 		sleep 5s
 	done
 done

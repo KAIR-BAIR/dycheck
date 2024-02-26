@@ -19,7 +19,7 @@
 
 import functools
 from collections import OrderedDict
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import flax.linen as nn
 import gin
@@ -47,6 +47,7 @@ def train_step(
     use_random_bkgd: bool = False,
     use_bkgd_loss: bool = False,
     use_depth_loss: bool = False,
+    depth_loss_quantile: Optional[float] = None,
     use_dist_loss: bool = False,
     **_,
 ) -> Tuple[types.PRNGKey, struct.TrainState, Dict, Dict, Dict]:
@@ -73,7 +74,9 @@ def train_step(
             depth = batch["depth"]
             pred_depth = out["depth"]
             # RGB mask is already merged into depth mask when preprocessing.
-            depth_loss = losses_impl.compute_depth_loss(depth, pred_depth)
+            depth_loss = losses_impl.compute_depth_loss(
+                depth, pred_depth, depth_loss_quantile
+            )
             stats["loss/depth"] = depth_loss
             loss += depth_loss * train_scalars.depth
 

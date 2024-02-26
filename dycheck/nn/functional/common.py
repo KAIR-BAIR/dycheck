@@ -26,7 +26,9 @@ from dycheck.utils import types
 
 
 def masked_mean(
-    x: types.Array, mask: Optional[types.Array] = None
+    x: types.Array,
+    mask: Optional[types.Array] = None,
+    quantile: Optional[float] = None,
 ) -> types.Array:
     """Compute mean of masked values by soft blending.
 
@@ -49,4 +51,7 @@ def masked_mean(
         return x.mean()
 
     mask = broadcast_to(mask, x.shape)
+    if quantile is not None:
+        threshold = jnp.quantile(jnp.where(mask > 0, x, 0), quantile)
+        mask = mask * (x < threshold)
     return (x * mask).sum() / mask.sum().clip(eps)  # type: ignore

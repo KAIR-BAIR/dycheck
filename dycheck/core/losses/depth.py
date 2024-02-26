@@ -17,6 +17,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+from typing import Optional
+
 import jax
 import jax.numpy as jnp
 
@@ -25,10 +27,12 @@ from dycheck.nn import functional as F
 
 @jax.jit
 def compute_depth_loss(
-    depth: jnp.ndarray, pred_depth: jnp.ndarray
+    depth: jnp.ndarray,
+    pred_depth: jnp.ndarray,
+    quantile: Optional[float] = None,
 ) -> jnp.ndarray:
     loss = (pred_depth - depth) ** 2
     mask = (depth != 0).astype(jnp.float32)
-    loss = F.common.masked_mean(loss, mask)
+    loss = F.common.masked_mean(loss, mask, quantile=quantile)
     loss = loss.mean()
     return loss

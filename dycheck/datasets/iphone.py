@@ -988,7 +988,7 @@ class iPhoneParser(NerfiesParser):
         depth = io.load(depth_path)
         if self.depth_name != "depth":
             # Hard-code for monocular depth.
-            depth = 1.0 / depth
+            depth[depth != 0] = 1 / depth[depth != 0]
         depth = depth * self.scale
         if depth.ndim == 2:
             depth = depth[..., None]
