@@ -65,6 +65,7 @@ class NovelView(base.Task):
         if not hasattr(engine, "renders_dir"):
             engine.renders_dir = osp.join(engine.work_dir, "renders")
         self.render_dir = osp.join(engine.renders_dir, "novel_view")
+        self.results_dir = osp.join(engine.work_dir, "results")
         if not hasattr(engine, "eval_datasets"):
             engine.eval_datasets = dict()
         for split in self.split:
@@ -172,6 +173,7 @@ class NovelView(base.Task):
                 rgb = image.to_quantized_float32(batch["rgb"])
                 mask = image.to_quantized_float32(batch["mask"])
                 pred_rgb = image.to_quantized_float32(rendered["rgb"])
+                pred_depth = np.array(rendered["depth"])[..., 0]
                 metrics_dict = OrderedDict(
                     {
                         "frame_name": frame_name,
@@ -222,6 +224,15 @@ class NovelView(base.Task):
                 )
                 # Skip logging to tensorboard bc it's a lot of images.
                 metrics_dicts.append(metrics_dict)
+                # Dump results.
+                io.dump(
+                    osp.join(self.results_dir, "rgb", frame_name + ".png"),
+                    pred_rgb,
+                )
+                io.dump(
+                    osp.join(self.results_dir, "depth", frame_name + ".npy"),
+                    pred_depth,
+                )
             metrics_dict = common.tree_collate(metrics_dicts)
             io.dump(
                 osp.join(self.render_dir, split, "metrics_dict.npz"),

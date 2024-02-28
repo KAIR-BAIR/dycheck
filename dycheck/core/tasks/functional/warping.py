@@ -322,7 +322,7 @@ def _warp_pixels(
         lambda x: x.reshape(batch_shape + x.shape[1:]), results
     )
     results["warped_pixels"] = geometry.project(
-        results.pop("warped_points"),
+        results["warped_points"],
         jnp.array(camera_to.intrin, jnp.float32),
         jnp.array(camera_to.extrin, jnp.float32),
         jnp.array(camera_to.radial_distortion, jnp.float32),

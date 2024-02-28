@@ -76,7 +76,7 @@ def get_kp_dataset(dataset: datasets.Dataset):
             }
             yield batch
 
-    return itertools.permutations(data_iter(), 2)
+    return itertools.product(data_iter(), repeat=2), cameras
 
 
 def visualize_kpt(
@@ -143,6 +143,7 @@ class KeypointTransfer(base.Task):
         if not hasattr(engine, "renders_dir"):
             engine.renders_dir = osp.join(engine.work_dir, "renders")
         self.render_dir = osp.join(engine.renders_dir, "kp_transfer")
+        self.results_dir = osp.join(engine.work_dir, "results")
         if not hasattr(engine, "skeletons"):
             engine.skeletons = dict()
         # Keypoint dataset is private to this task.
@@ -153,7 +154,7 @@ class KeypointTransfer(base.Task):
                     split=split,
                     training=False,
                 )
-                self.kp_datasets[split] = get_kp_dataset(dataset)
+                self.kp_datasets[split] = get_kp_dataset(dataset)[0]
                 engine.skeletons[split] = dataset.parser.load_skeleton(split)
         self.pwarp_pixels = get_pwarp_pixels(engine.model)
 
@@ -268,7 +269,7 @@ class KeypointTransfer(base.Task):
 
         for split in self.split:
             # Recreate the dataset such that the iterator is reset.
-            dataset = get_kp_dataset(
+            dataset, cameras = get_kp_dataset(
                 engine.dataset_cls.create(
                     split=split,
                     training=False,
@@ -276,10 +277,11 @@ class KeypointTransfer(base.Task):
             )
             skeleton = engine.skeletons[split]
             metrics_dicts = []
+            pred_keypoints_3d = []
             pbar = common.tqdm(
                 dataset,
                 desc=f"* Transferring keypoints pairs ({split})",
-                total=NUM_KEYPOINT_FRAMES * (NUM_KEYPOINT_FRAMES - 1),
+                total=NUM_KEYPOINT_FRAMES * NUM_KEYPOINT_FRAMES,
             )
             for batch, batch_to in pbar:
                 frame_name, frame_name_to = (
@@ -294,6 +296,7 @@ class KeypointTransfer(base.Task):
                 # Get common keypoints.
                 mask = (keypoints[..., -1] == 1) & (keypoints_to[..., -1] == 1)
                 if mask.sum() == 0:
+                    pred_keypoints_3d.append(np.zeros_like(keypoints))
                     continue
                 common_keypoints, common_keypoints_to = (
                     keypoints[mask][..., :2],
@@ -326,6 +329,7 @@ class KeypointTransfer(base.Task):
                     show_pbar=False,
                 )
                 pred_common_keypoints_to = warped["warped_pixels"]
+                pred_common_keypoints_3d_to = warped["warped_points"]
                 common_corrects = metrics.compute_pck(
                     common_keypoints_to,
                     pred_common_keypoints_to,
@@ -382,6 +386,9 @@ class KeypointTransfer(base.Task):
                 )
                 # Skip logging to tensorboard bc it's a lot of images.
                 metrics_dicts.append(metrics_dict)
+                curr_pred_keypoints_3d = np.zeros_like(keypoints)
+                curr_pred_keypoints_3d[mask] = pred_common_keypoints_3d_to
+                pred_keypoints_3d.append(curr_pred_keypoints_3d)
             metrics_dict = common.tree_collate(metrics_dicts)
             io.dump(
                 osp.join(self.render_dir, split, "metrics_dict.npz"),
@@ -403,4 +410,15 @@ class KeypointTransfer(base.Task):
                     f"* Mean keypoint transfer metrics ({split}):\n"
                     f"{utils.format_dict(mean_metrics_dict)}"
                 )
+            )
+            pred_keypoints_3d = np.stack(pred_keypoints_3d, 0)
+            Ks = np.stack([c.intrin for c in cameras], 0)
+            w2cs = np.stack([c.extrin for c in cameras], 0)
+            io.dump(
+                osp.join(self.results_dir, "keypoints.npz"),
+                **{
+                    "Ks": Ks,
+                    "w2cs": w2cs,
+                    "pred_keypoints_3d": pred_keypoints_3d,
+                },
             )
