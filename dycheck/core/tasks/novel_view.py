@@ -57,7 +57,7 @@ class NovelView(base.Task):
 
     @property
     def eligible(self):
-        return self.engine.dataset.has_novel_view
+        return "train" in self.split or self.engine.dataset.has_novel_view
 
     def start(self):
         engine = self.engine
