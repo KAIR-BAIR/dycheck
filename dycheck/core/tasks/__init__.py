@@ -22,6 +22,7 @@ from . import (
     checkpoint,
     cross_view,
     kp_transfer,
+    kp_transfer_for_figure,
     novel_view,
     text,
     video,
