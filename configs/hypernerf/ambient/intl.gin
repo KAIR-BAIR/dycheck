@@ -1,3 +1,0 @@
-include 'nerfies/ambient/intl.gin'
-
-DATASET = 'hypernerf'

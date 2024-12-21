@@ -1,3 +1,0 @@
-DATASET = 'iphone'
-
-combine_record3d_av.Config.sequence = %SEQUENCE

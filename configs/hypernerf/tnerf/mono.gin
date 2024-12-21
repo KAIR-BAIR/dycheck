@@ -1,3 +1,0 @@
-include 'nerfies/tnerf/mono.gin'
-
-DATASET = 'hypernerf'

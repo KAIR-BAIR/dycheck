@@ -1,3 +1,0 @@
-include 'nerfies/process_emf.gin'
-
-DATASET = 'hypernerf'

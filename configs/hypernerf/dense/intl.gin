@@ -1,3 +1,0 @@
-include 'nerfies/dense/intl.gin'
-
-DATASET = 'hypernerf'
